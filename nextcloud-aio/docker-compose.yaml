@@ -1,0 +1,30 @@
+services:
+  nextcloud-aio-mastercontainer:
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    init: true
+    restart: always
+    container_name: nextcloud-aio-mastercontainer
+    network_mode: bridge
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8090:8080
+      - 8443:8443
+      - 11000:11000
+    environment:
+      AIO_COMMUNITY_CONTAINERS: "local-ai memories"
+      APACHE_PORT: 11000
+      NC_TRUSTED_PROXIES: 127.0.0.1
+      SKIP_DOMAIN_VALIDATION: true
+      FULLTEXTSEARCH_JAVA_OPTIONS: "-Xms1024M -Xmx1024M"
+      NEXTCLOUD_DATADIR: /home/orion/self-hosting/nextcloud-aio/ncdata
+      NEXTCLOUD_UPLOAD_LIMIT: 1028G
+      NEXTCLOUD_MAX_TIME: 7200
+      NEXTCLOUD_MEMORY_LIMIT: 2056M
+      NEXTCLOUD_ENABLE_DRI_DEVICE: true
+      TALK_PORT: 3478
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
