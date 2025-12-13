@@ -1,0 +1,18 @@
+services:
+  nginx_proxy_manager:
+    image: "jc21/nginx-proxy-manager:latest"
+    container_name: nginx_proxy_manager
+    restart: unless-stopped
+    network_mode: "host"
+    # ports:
+    #   - 80:80
+    #   - 443:443
+    #   - 81:81
+    volumes:
+      - ./data/npm_data:/data
+      - ./data/npm_letsencrypt:/etc/letsencrypt
+      - ./data/npm_logs:/var/log/nginx
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+      INITIAL_ADMIN_EMAIL: admin@example.com
+      INITIAL_ADMIN_PASSWORD: changeme

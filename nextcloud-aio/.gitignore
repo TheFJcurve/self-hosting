@@ -1,2 +1,4 @@
-ncdata
 .env
+db/
+library/
+data/

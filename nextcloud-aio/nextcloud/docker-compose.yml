@@ -1,0 +1,73 @@
+services:
+  # Note: MariaDB is external service. You can find more information about the configuration here:
+  # https://hub.docker.com/_/mariadb
+  db:
+    # Note: Check the recommend version here: https://docs.nextcloud.com/server/latest/admin_manual/installation/system_requirements.html#server
+    image: mariadb:lts
+    container_name: nextcloud-compose-db
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED
+    volumes:
+      - ${DB_DATA_LOCATION}:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
+      - MYSQL_PASSWORD=${DB_PW}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=${DB_USER}
+
+  # Note: Redis is an external service. You can find more information about the configuration here:
+  # https://hub.docker.com/_/redis
+  redis:
+    image: redis:alpine
+    restart: always
+
+  app:
+    image: nextcloud
+    container_name: nextcloud-compose
+    restart: always
+    ports:
+      - 12000:80
+    depends_on:
+      - redis
+      - db
+    volumes:
+      - ${NEXTCLOUD_LIBRARY}:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=${DB_PW}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_HOST=db
+      #
+      - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
+      - TRUSTED_DOMAINS={nextcloud.tail.sargun.ca}
+      - OVERWRITECLIURL=https://nextcloud.tail.sargun.ca
+      - OVERWRITEPROTOCOL=https
+      - NEXTCLOUD_DEFAULT_PHONE_REGION=US
+
+  collabora:
+    image: collabora/code:24.04.12.3.1
+    # network_mode: "host"
+    ports:
+      - 127.0.0.1:9980:9980
+    container_name: collabora
+    # release notes: https://www.collaboraonline.com/release-notes/
+    # networks:
+    #   ocis-net:
+    environment:
+      aliasgroup1: ${alias11} # Aliases must be separated by `|`
+      DONT_GEN_SSL_CERT: "YES"
+      extra_params: |
+        --o:ssl.enable=false \
+        --o:ssl.ssl_verification=true \
+        --o:ssl.termination=true \
+        --o:welcome.enable=false
+      username: admin
+      password: admin
+    cap_add:
+      - MKNOD
+    logging:
+      driver: ${LOG_DRIVER:-local}
+    restart: always
+    command: ["bash", "-c", "coolconfig generate-proof-key ; /start-collabora-online.sh"]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9980/hosting/discovery" ]
