@@ -20,6 +20,7 @@ services:
       - nextcloud_network
       - immich_network
       - openwebui_network
+      - vaultwarden_default
 
 networks:
   npm_proxy:
@@ -37,3 +38,7 @@ networks:
   openwebui_network:
     external: true
     name: open-webui_default
+
+  vaultwarden_default:
+    external: true
+    name: vaultwarden_default

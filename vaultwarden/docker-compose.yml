@@ -1,0 +1,16 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      DOMAIN: "https://vaultwarden.tail.sargun.ca"
+    volumes:
+      - ./vw-data/:/data/
+    ports:
+      - 9445:80
+
+networks:
+  vaultwarden_network:
+    name: vaultwarden_default
+    driver: bridge
