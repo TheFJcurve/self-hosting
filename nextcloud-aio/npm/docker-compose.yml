@@ -3,11 +3,10 @@ services:
     image: "jc21/nginx-proxy-manager:latest"
     container_name: nginx_proxy_manager
     restart: unless-stopped
-    network_mode: "host"
-    # ports:
-    #   - 80:80
-    #   - 443:443
-    #   - 81:81
+    ports:
+       - 80:80
+       - 443:443
+       - 81:81
     volumes:
       - ./data/npm_data:/data
       - ./data/npm_letsencrypt:/etc/letsencrypt
@@ -16,3 +15,25 @@ services:
       DB_SQLITE_FILE: "/data/database.sqlite"
       INITIAL_ADMIN_EMAIL: admin@example.com
       INITIAL_ADMIN_PASSWORD: changeme
+    networks:
+      - npm_proxy
+      - nextcloud_network
+      - immich_network
+      - openwebui_network
+
+networks:
+  npm_proxy:
+    name: npm_proxy
+    driver: bridge
+  
+  nextcloud_network:
+    external: true
+    name: nextcloud_default
+  
+  immich_network:
+    external: true
+    name: immich_default
+  
+  openwebui_network:
+    external: true
+    name: open-webui_default
