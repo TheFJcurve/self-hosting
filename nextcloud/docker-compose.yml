@@ -38,7 +38,7 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_HOST=db
       #
-      - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
+      - NEXTCLOUD_TRUSTED_DOMAINS={nextcloud.tail.sargun.ca}
       - TRUSTED_DOMAINS={nextcloud.tail.sargun.ca}
       - OVERWRITECLIURL=https://nextcloud.tail.sargun.ca
       - OVERWRITEPROTOCOL=https
