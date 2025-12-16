@@ -8,9 +8,10 @@ services:
       - TZ=EST
       - JELLYFIN_PublishedServerUrl=https://jellyfin.tail.sargun.ca
     volumes:
-      - /path/to/jellyfin/library:/config
-      - /path/to/tvseries:/data/tvshows
-      - /path/to/movies:/data/movies
+      - ./library:/config
+      - ./tvseries:/data/tvshows
+      - ./music:/data/music
+      - ./movies:/data/movies
     ports:
       - 8096:8096
     restart: unless-stopped
