@@ -21,6 +21,7 @@ services:
       - immich_network
       - openwebui_network
       - vaultwarden_default
+      - jellyfin_default
 
 networks:
   npm_proxy:
@@ -42,3 +43,7 @@ networks:
   vaultwarden_default:
     external: true
     name: vaultwarden_default
+
+  jellyfin_default:
+    external: true
+    name: jellyfin_default

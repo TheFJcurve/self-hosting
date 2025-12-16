@@ -1,0 +1,21 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=EST
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.tail.sargun.ca
+    volumes:
+      - /path/to/jellyfin/library:/config
+      - /path/to/tvseries:/data/tvshows
+      - /path/to/movies:/data/movies
+    ports:
+      - 8096:8096
+    restart: unless-stopped
+
+networks:
+  jellyfin_network:
+    name: jellyfin_default
+    driver: bridge
