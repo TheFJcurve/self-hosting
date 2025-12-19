@@ -12,7 +12,6 @@ services:
       - ./tvseries:/data/tvshows
       - ./music:/data/music
       - ./movies:/data/movies
-      - ./animes:/data/animes
     ports:
       - 8096:8096
     restart: unless-stopped
