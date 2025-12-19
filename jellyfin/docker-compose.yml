@@ -1,20 +1,32 @@
 services:
   jellyfin:
-    image: lscr.io/linuxserver/jellyfin:latest
+    image: jellyfin/jellyfin
     container_name: jellyfin
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=EST
-      - JELLYFIN_PublishedServerUrl=https://jellyfin.tail.sargun.ca
-    volumes:
-      - ./library:/config
-      - ./tvseries:/data/tvshows
-      - ./music:/data/music
-      - ./movies:/data/movies
     ports:
       - 8096:8096
-    restart: unless-stopped
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - type: bind
+        source: ./music
+        target: /data/music
+      - type: bind
+        source: ./shows
+        target: /data/shows
+      - type: bind
+        source: ./movies
+        target: /data/movies
+    restart: 'unless-stopped'
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://jellyfin.tail.sargun.ca
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
 networks:
   jellyfin_network:
