@@ -22,6 +22,7 @@ services:
       - openwebui_network
       - vaultwarden_default
       - jellyfin_default
+      - forgejo_default
 
 networks:
   npm_proxy:
@@ -47,3 +48,7 @@ networks:
   jellyfin_default:
     external: true
     name: jellyfin_default
+
+  forgejo_default:
+    external: true
+    name: forgejo_default

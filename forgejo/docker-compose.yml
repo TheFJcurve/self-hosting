@@ -1,0 +1,19 @@
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:13
+    container_name: forgejo
+    restart: always
+    networks:
+      - forgejo_network
+    volumes:
+      - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8950:3000
+      - 222:22
+
+networks:
+  forgejo_network:
+    name: forgejo_default
+    driver: bridge
