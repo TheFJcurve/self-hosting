@@ -23,6 +23,7 @@ services:
       - vaultwarden_default
       - jellyfin_default
       - forgejo_default
+      - clipcascade_default
 
 networks:
   npm_proxy:
@@ -52,3 +53,7 @@ networks:
   forgejo_default:
     external: true
     name: forgejo_default
+
+  clipcascade_default:
+    external: true
+    name: clipcascade_default

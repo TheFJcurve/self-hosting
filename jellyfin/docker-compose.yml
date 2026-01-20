@@ -11,6 +11,9 @@ services:
         source: ./music
         target: /data/music
       - type: bind
+        source: ./anime
+        target: /data/anime
+      - type: bind
         source: ./shows
         target: /data/shows
       - type: bind

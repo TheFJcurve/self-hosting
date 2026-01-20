@@ -14,13 +14,11 @@ services:
       - MYSQL_PASSWORD=${DB_PW}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=${DB_USER}
-
   # Note: Redis is an external service. You can find more information about the configuration here:
   # https://hub.docker.com/_/redis
   redis:
     image: redis:alpine
     restart: always
-
   app:
     image: nextcloud
     container_name: nextcloud-compose
@@ -50,34 +48,24 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-
   collabora:
-    image: collabora/code:24.04.12.3.1
-    # network_mode: "host"
+    image: collabora/code
     ports:
-      - 127.0.0.1:9980:9980
+      - 9980:9980
     container_name: collabora
-    # release notes: https://www.collaboraonline.com/release-notes/
-    # networks:
-    #   ocis-net:
     environment:
-      aliasgroup1: ${alias11} # Aliases must be separated by `|`
-      DONT_GEN_SSL_CERT: "YES"
-      extra_params: |
-        --o:ssl.enable=false \
-        --o:ssl.ssl_verification=true \
-        --o:ssl.termination=true \
-        --o:welcome.enable=false
-      username: admin
-      password: admin
+      - aliasgroup1=${alias11}
+      - DONT_GEN_SSL_CERT=YES
+      - extra_params=--o:ssl.enable=false --o:ssl.termination=true
+      - username=admin
+      - password=admin
     cap_add:
       - MKNOD
     logging:
       driver: ${LOG_DRIVER:-local}
     restart: always
-    command: ["bash", "-c", "coolconfig generate-proof-key ; /start-collabora-online.sh"]
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9980/hosting/discovery" ]
+      test: ["CMD", "curl", "-f", "http://localhost:9980/hosting/discovery"]
     deploy:
       resources:
         reservations:
@@ -85,5 +73,3 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-
-
