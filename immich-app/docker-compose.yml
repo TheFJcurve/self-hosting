@@ -4,14 +4,6 @@ services:
   immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
     extends:
        file: hwaccel.transcoding.yml
        service: nvenc
@@ -32,14 +24,6 @@ services:
   immich-machine-learning:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-cuda
-    deploy:
-      resources:
-       reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
     extends:
        file: hwaccel.ml.yml
        service: cuda

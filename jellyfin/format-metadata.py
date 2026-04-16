@@ -46,7 +46,7 @@ def parse_artists(artist_string):
 
 
 def format_artists_to_semicolon(artists_list):
-    return ';'.join(artists_list)
+    return '; '.join(artists_list)
 
 
 def get_musicbrainz_id_from_nfo(root):

@@ -36,6 +36,22 @@ services:
               count: all
               capabilities: [gpu]
     restart: unless-stopped
+  
+  opencode:
+    image: ghcr.io/anomalyco/opencode
+    container_name: opencode
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${PWD}:/project/${DIR}
+      - ./.config/opencode:/root/.config/opencode
+    working_dir: /project/${DIR}
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    depends_on:
+      - ollama
+    profiles:
+      - opencode
 
 volumes:
   open-webui:
