@@ -53,6 +53,25 @@ services:
     profiles:
       - opencode
 
+  crawl4ai:
+    image: unclecode/crawl4ai:latest
+    container_name: crawl4ai
+    ports:
+      - "11235:11235"
+    volumes:
+      - ./crawl4ai_data:/root/.crawl4ai
+    restart: unless-stopped
+
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./searxng:/etc/searxng
+    restart: unless-stopped
+
 volumes:
   open-webui:
   ollama_data:
+  crawl4ai_data:

@@ -1,0 +1,13 @@
+use_default_settings:
+  engines:
+    keep_only:
+      - duckduckgo
+
+server:
+  secret_key: "c15f6b575f97aa408af9eb5bebf5de66332278c74555b8f065d3f84d55dd4f2f"
+  limiter: false
+
+search:
+  formats:
+    - html
+    - json
