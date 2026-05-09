@@ -14,6 +14,13 @@
           "options": {
             "num_ctx": 131072
           }
+        },
+	"llama3.1:8b": {
+          "name": "llama3.1:8b",
+          "tools": true,
+	  "options": {
+            "num_ctx": 131072
+          }
         }
       }
     }

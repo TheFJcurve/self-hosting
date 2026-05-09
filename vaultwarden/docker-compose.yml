@@ -3,12 +3,12 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
-    environment:
-      DOMAIN: "https://vaultwarden.tail.sargun.ca"
+    env_file:
+      - .env
     volumes:
       - ./vw-data/:/data/
-    ports:
-      - 9445:80
+    networks:
+      - vaultwarden_network
 
 networks:
   vaultwarden_network:

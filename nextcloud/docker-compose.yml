@@ -1,30 +1,8 @@
 services:
-  # Note: MariaDB is external service. You can find more information about the configuration here:
-  # https://hub.docker.com/_/mariadb
-  db:
-    # Note: Check the recommend version here: https://docs.nextcloud.com/server/latest/admin_manual/installation/system_requirements.html#server
-    image: mariadb:lts
-    container_name: nextcloud-compose-db
-    restart: always
-    command: --transaction-isolation=READ-COMMITTED
-    volumes:
-      - ${DB_DATA_LOCATION}:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
-      - MYSQL_PASSWORD=${DB_PW}
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=${DB_USER}
-  # Note: Redis is an external service. You can find more information about the configuration here:
-  # https://hub.docker.com/_/redis
-  redis:
-    image: redis:alpine
-    restart: always
   app:
     image: nextcloud
     container_name: nextcloud-compose
     restart: always
-    ports:
-      - 12000:80
     depends_on:
       - redis
       - db
@@ -41,17 +19,32 @@ services:
       - OVERWRITECLIURL=https://nextcloud.tail.sargun.ca
       - OVERWRITEPROTOCOL=https
       - NEXTCLOUD_DEFAULT_PHONE_REGION=US
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+    networks:
+      - nextcloud_network
+
+  db:
+    image: mariadb:lts
+    container_name: nextcloud-compose-db
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED
+    volumes:
+      - ${DB_DATA_LOCATION}:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
+      - MYSQL_PASSWORD=${DB_PW}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=${DB_USER}
+    networks:
+      - nextcloud_network
+
+  redis:
+    image: redis:alpine
+    restart: always
+    networks:
+      - nextcloud_network
+
   collabora:
     image: collabora/code
-    ports:
-      - 9980:9980
     container_name: collabora
     environment:
       - aliasgroup1=${alias11}
@@ -66,10 +59,10 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9980/hosting/discovery"]
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+    networks:
+      - nextcloud_network
+
+networks:
+  nextcloud_network:
+    name: nextcloud_default
+    driver: bridge

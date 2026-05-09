@@ -12,28 +12,26 @@ services:
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
-    ports:
-      - '2283:2283'
     depends_on:
       - redis
       - database
     restart: always
     healthcheck:
       disable: false
-
+  
   immich-machine-learning:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-cuda
     extends:
        file: hwaccel.ml.yml
        service: cuda
-    volumes:
-      - model-cache:/cache
     env_file:
       - .env
+    volumes:
+      - model-cache:/cache
     restart: always
     healthcheck:
-      disable: false
+      disable: true
 
   redis:
     container_name: immich_redis

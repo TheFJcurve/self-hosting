@@ -160,7 +160,7 @@ services:
       # # ⚙️ Configures the server's logging level for diagnostics and troubleshooting.
       # # Available levels: TRACE (most detailed), DEBUG, INFO (default)
       # # Default: INFO
-      - CC_SERVER_LOGGING_LEVEL=DEBUG
+      - CC_SERVER_LOGGING_LEVEL=INFO
 
       # # ⚙️ Configures the maximum number of days to retain server logs.
       # # Default: 30

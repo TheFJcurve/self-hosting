@@ -20,8 +20,6 @@ services:
   openwebui:
     image: ghcr.io/open-webui/open-webui:cuda
     container_name: openwebui
-    ports:
-      - "4591:8080"
     volumes:
       - open-webui:/app/backend/data
     environment:
@@ -56,8 +54,6 @@ services:
   crawl4ai:
     image: unclecode/crawl4ai:latest
     container_name: crawl4ai
-    ports:
-      - "11235:11235"
     volumes:
       - ./crawl4ai_data:/root/.crawl4ai
     restart: unless-stopped
@@ -65,8 +61,6 @@ services:
   searxng:
     image: searxng/searxng:latest
     container_name: searxng
-    ports:
-      - "8888:8080"
     volumes:
       - ./searxng:/etc/searxng
     restart: unless-stopped

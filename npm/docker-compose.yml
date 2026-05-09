@@ -4,9 +4,9 @@ services:
     container_name: nginx_proxy_manager
     restart: unless-stopped
     ports:
-       - 80:80
-       - 443:443
-       - 81:81
+      - 80:80
+      - 443:443
+      - 81:81
     volumes:
       - ./data/npm_data:/data
       - ./data/npm_letsencrypt:/etc/letsencrypt
@@ -24,36 +24,37 @@ services:
       - jellyfin_default
       - forgejo_default
       - clipcascade_default
+      - homarr_default
+      - grafana_network
 
 networks:
   npm_proxy:
     name: npm_proxy
     driver: bridge
-  
   nextcloud_network:
     external: true
     name: nextcloud_default
-  
   immich_network:
     external: true
     name: immich_default
-  
   openwebui_network:
     external: true
     name: open-webui_default
-
   vaultwarden_default:
     external: true
     name: vaultwarden_default
-
   jellyfin_default:
     external: true
     name: jellyfin_default
-
   forgejo_default:
     external: true
     name: forgejo_default
-
   clipcascade_default:
     external: true
     name: clipcascade_default
+  homarr_default:
+    external: true
+    name: homarr_default
+  grafana_network:
+    external: true
+    name: grafana_default
