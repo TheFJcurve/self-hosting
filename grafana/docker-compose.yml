@@ -34,6 +34,7 @@ services:
       - grafana_network
       - immich_network
       - vaultwarden_network
+      - kuma_network
     deploy:
       resources:
         limits:
@@ -151,6 +152,10 @@ networks:
   vaultwarden_network:
     external: true
     name: vaultwarden_default
+
+  kuma_network:
+    external: true
+    name: kuma_default
 
 volumes:
   grafana_data:
