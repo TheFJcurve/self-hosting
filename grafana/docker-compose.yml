@@ -11,6 +11,14 @@ services:
       - prometheus
     networks:
       - grafana_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.1'
 
   prometheus:
     image: prom/prometheus:latest
@@ -26,6 +34,14 @@ services:
       - grafana_network
       - immich_network
       - vaultwarden_network
+    deploy:
+      resources:
+        limits:
+          memory: 1500m
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.1'
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -38,6 +54,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - grafana_network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 128m
+          cpus: '0.25'
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -48,6 +72,14 @@ services:
       - /:/host:ro,rslave
     networks:
       - grafana_network
+    deploy:
+      resources:
+        limits:
+          memory: 128m
+          cpus: '0.25'
+        reservations:
+          memory: 16m
+          cpus: '0.05'
 
   loki:
     image: grafana/loki:latest
@@ -57,6 +89,14 @@ services:
       - loki_data:/loki
     networks:
       - grafana_network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 128m
+          cpus: '0.1'
 
   promtail:
     image: grafana/promtail:latest
@@ -69,13 +109,26 @@ services:
       - ./promtail-config.yml:/etc/promtail/config.yml:ro
     networks:
       - grafana_network
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
+        reservations:
+          memory: 64m
+          cpus: '0.1'
 
   dcgm_exporter:
     image: nvcr.io/nvidia/k8s/dcgm-exporter:latest
     container_name: dcgm_exporter
     deploy:
       resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
         reservations:
+          memory: 64m
+          cpus: '0.1'
           devices:
             - driver: nvidia
               count: all

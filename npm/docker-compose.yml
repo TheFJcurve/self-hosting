@@ -26,6 +26,14 @@ services:
       - clipcascade_default
       - homarr_default
       - grafana_network
+    deploy:
+      resources:
+        limits:
+          memory: 900m
+          cpus: '1'
+        reservations:
+          memory: 128m
+          cpus: '0.1'
 
 networks:
   npm_proxy:

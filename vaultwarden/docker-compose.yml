@@ -9,6 +9,14 @@ services:
       - ./vw-data/:/data/
     networks:
       - vaultwarden_network
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
+        reservations:
+          memory: 64m
+          cpus: '0.05'
 
 networks:
   vaultwarden_network:

@@ -23,7 +23,12 @@ services:
     runtime: nvidia
     deploy:
       resources:
+        limits:
+          memory: 8g
+          cpus: '3'
         reservations:
+          memory: 1g
+          cpus: '0.5'
           devices:
             - driver: nvidia
               count: all

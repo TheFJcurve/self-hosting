@@ -12,6 +12,14 @@ services:
     ports:
       - 8950:3000
       - 222:22
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 128m
+          cpus: '0.1'
 
 networks:
   forgejo_network:

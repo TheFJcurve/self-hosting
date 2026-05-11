@@ -18,6 +18,14 @@ services:
     restart: always
     healthcheck:
       disable: false
+    deploy:
+      resources:
+        limits:
+          memory: 8g
+          cpus: '2'
+        reservations:
+          memory: 1g
+          cpus: '0.5'
   
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -32,6 +40,14 @@ services:
     restart: always
     healthcheck:
       disable: true
+    deploy:
+      resources:
+        limits:
+          memory: 2500m
+          cpus: '4'
+        reservations:
+          memory: 256m
+          cpus: '0.5'
 
   redis:
     container_name: immich_redis
@@ -39,6 +55,14 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
+        reservations:
+          memory: 16m
+          cpus: '0.1'
 
   database:
     container_name: immich_postgres
@@ -52,6 +76,14 @@ services:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     shm_size: 128mb
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '2'
+        reservations:
+          memory: 512m
+          cpus: '0.25'
 
 volumes:
   model-cache:

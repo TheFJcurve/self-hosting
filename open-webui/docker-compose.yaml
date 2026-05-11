@@ -8,7 +8,12 @@ services:
       - ollama_data:/root/.ollama
     deploy:
       resources:
+        limits:
+            memory: 8g
+            cpus: '8'
         reservations:
+          memory: 256m
+          cpus: '1'
           devices:
             - driver: nvidia
               count: all
@@ -28,11 +33,12 @@ services:
       - ollama
     deploy:
       resources:
+        limits:
+          memory: 3g
+          cpus: '2'
         reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+          memory: 512m
+          cpus: '0.25'
     restart: unless-stopped
   
   opencode:
@@ -50,6 +56,14 @@ services:
       - ollama
     profiles:
       - opencode
+    deploy:
+      resources:
+        limits:
+          memory: 1500m
+          cpus: '2'
+        reservations:
+          memory: 512m
+          cpus: '0.1'
 
   crawl4ai:
     image: unclecode/crawl4ai:latest
@@ -57,6 +71,14 @@ services:
     volumes:
       - ./crawl4ai_data:/root/.crawl4ai
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '2'
+        reservations:
+          memory: 256m
+          cpus: '0.5'
 
   searxng:
     image: searxng/searxng:latest
@@ -64,6 +86,14 @@ services:
     volumes:
       - ./searxng:/etc/searxng
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 128m
+          cpus: '0.25'
 
 volumes:
   open-webui:

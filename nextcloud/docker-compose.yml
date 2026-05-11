@@ -21,6 +21,14 @@ services:
       - NEXTCLOUD_DEFAULT_PHONE_REGION=US
     networks:
       - nextcloud_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '2'
+        reservations:
+          memory: 256m
+          cpus: '0.25'
 
   db:
     image: mariadb:lts
@@ -36,12 +44,28 @@ services:
       - MYSQL_USER=${DB_USER}
     networks:
       - nextcloud_network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.25'
 
   redis:
     image: redis:alpine
     restart: always
     networks:
       - nextcloud_network
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
+        reservations:
+          memory: 16m
+          cpus: '0.1'
 
   collabora:
     image: collabora/code
@@ -61,6 +85,14 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:9980/hosting/discovery"]
     networks:
       - nextcloud_network
+    deploy:
+      resources:
+        limits:
+          memory: 1500m
+          cpus: '2'
+        reservations:
+          memory: 512m
+          cpus: '0.25'
 
 networks:
   nextcloud_network:
