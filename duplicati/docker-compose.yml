@@ -1,0 +1,35 @@
+services:
+  myapp:
+    image: duplicati/duplicati:latest
+    container_name: duplicati
+    volumes:
+      - duplicati_data:/data
+      - /home/orion/backup:/destination/backup
+      - /home/orion/self-hosting:/source/self-hosting:ro
+    environment:
+      DUPLICATI_PRELOAD_SETTINGS: /run/secrets/preloadsettings
+    secrets:
+      - preloadsettings
+    networks:
+      - duplicati_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 8g
+          cpus: '2'
+        reservations:
+          memory: 256m
+          cpus: '0.25'
+
+secrets:
+  preloadsettings:
+    file: ./preload.json
+
+volumes:
+  duplicati_data:
+
+networks:
+  duplicati_network:
+    name: duplicati_default
+    driver: bridge

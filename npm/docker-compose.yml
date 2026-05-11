@@ -24,8 +24,9 @@ services:
       - jellyfin_default
       - forgejo_default
       - clipcascade_default
-      - homarr_default
       - grafana_network
+      - duplicati_network
+      - kuma_network
     deploy:
       resources:
         limits:
@@ -60,9 +61,12 @@ networks:
   clipcascade_default:
     external: true
     name: clipcascade_default
-  homarr_default:
-    external: true
-    name: homarr_default
   grafana_network:
     external: true
     name: grafana_default
+  duplicati_network:
+    external: true
+    name: duplicati_default
+  kuma_network:
+    external: true
+    name: kuma_default

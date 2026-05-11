@@ -1,0 +1,39 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - kuma_data:/app/data
+    environment:
+      - TZ=EST
+      - UMASK=0022  
+    networks:
+      - kuma_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
+        reservations:
+          memory: 64m
+          cpus: '0.1'
+
+volumes:
+  kuma_data:
+
+networks:
+  kuma_network:
+    name: kuma_default
+    driver: bridge
