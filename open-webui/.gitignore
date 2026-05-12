@@ -1,3 +1,6 @@
 backend
-ollama
+ollama_data
+openwebui_data
+crawl4ai_data
+searxng_data
 .env

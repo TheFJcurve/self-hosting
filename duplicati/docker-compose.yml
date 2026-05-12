@@ -3,7 +3,7 @@ services:
     image: duplicati/duplicati:latest
     container_name: duplicati
     volumes:
-      - duplicati_data:/data
+      - ./duplicati_data:/data
       - /home/orion/backup:/destination/backup
       - /home/orion/self-hosting:/source/self-hosting:ro
     environment:
@@ -25,9 +25,6 @@ services:
 secrets:
   preloadsettings:
     file: ./preload.json
-
-volumes:
-  duplicati_data:
 
 networks:
   duplicati_network:

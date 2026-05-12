@@ -5,7 +5,7 @@ services:
     ports:
       - 11434:11434
     volumes:
-      - ollama_data:/root/.ollama
+      - ./ollama_data:/root/.ollama
     deploy:
       resources:
         limits:
@@ -26,7 +26,7 @@ services:
     image: ghcr.io/open-webui/open-webui:cuda
     container_name: openwebui
     volumes:
-      - open-webui:/app/backend/data
+      - ./openwebui_data:/app/backend/data
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
     depends_on:
@@ -60,7 +60,7 @@ services:
     image: searxng/searxng:latest
     container_name: searxng
     volumes:
-      - ./searxng:/etc/searxng
+      - ./searxng_data:/etc/searxng
     restart: unless-stopped
     deploy:
       resources:
@@ -70,8 +70,3 @@ services:
         reservations:
           memory: 128m
           cpus: '0.25'
-
-volumes:
-  open-webui:
-  ollama_data:
-  crawl4ai_data:

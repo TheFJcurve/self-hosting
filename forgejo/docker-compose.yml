@@ -45,7 +45,3 @@ networks:
   forgejo_network:
     name: forgejo_default
     driver: bridge
-
-volumes:
-  forgejo_data:
-  postgres_data:

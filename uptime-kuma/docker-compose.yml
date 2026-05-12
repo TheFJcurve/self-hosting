@@ -4,7 +4,7 @@ services:
     container_name: uptime-kuma
     restart: unless-stopped
     volumes:
-      - kuma_data:/app/data
+      - ./kuma_data:/app/data
     environment:
       - TZ=EST
       - UMASK=0022  
@@ -29,9 +29,6 @@ services:
         reservations:
           memory: 128m
           cpus: '0.1'
-
-volumes:
-  kuma_data:
 
 networks:
   kuma_network:

@@ -3,7 +3,7 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     volumes:
-      - grafana_data:/var/lib/grafana
+      - ./grafana_data:/var/lib/grafana
     environment:
       - GF_SERVER_ROOT_URL=https://grafana.tail.sargun.ca
       - GF_SERVER_SERVE_FROM_SUB_PATH=false
@@ -27,8 +27,9 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
-      - prometheus_data:/prometheus
+      - ./prometheus_data:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./uptime_kuma_token:/run/secrets/uptime_kuma_token:ro 
     depends_on:
       - cadvisor
     networks:
@@ -44,6 +45,24 @@ services:
           cpus: '1'
         reservations:
           memory: 256m
+          cpus: '0.1'
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki_data:/loki
+    networks:
+      - grafana_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 128m
           cpus: '0.1'
 
   cadvisor:
@@ -85,24 +104,6 @@ services:
         reservations:
           memory: 16m
           cpus: '0.05'
-
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
-    command: -config.file=/etc/loki/local-config.yaml
-    volumes:
-      - loki_data:/loki
-    networks:
-      - grafana_network
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 512m
-          cpus: '1'
-        reservations:
-          memory: 128m
-          cpus: '0.1'
 
   promtail:
     image: grafana/promtail:latest
@@ -162,8 +163,3 @@ networks:
   kuma_network:
     external: true
     name: kuma_default
-
-volumes:
-  grafana_data:
-  prometheus_data:
-  loki_data:

@@ -40,4 +40,4 @@ scrape_configs:
       - targets:
           - uptime-kuma:3001
     basic_auth:
-      password: uk1_6y11esBPITGwR9SsIoPnm6ZIPFl-95QoXtM1TYpB
+      password_file: /run/secrets/uptime_kuma_token
