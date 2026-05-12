@@ -24,10 +24,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 256m
+          memory: 512m
           cpus: '0.5'
         reservations:
-          memory: 64m
+          memory: 128m
           cpus: '0.1'
 
 volumes:

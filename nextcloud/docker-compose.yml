@@ -55,6 +55,7 @@ services:
 
   redis:
     image: redis:alpine
+    container_name: nextcloud-redis
     restart: always
     networks:
       - nextcloud_network
@@ -88,8 +89,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1500m
-          cpus: '2'
+          memory: 3g
+          cpus: '3'
         reservations:
           memory: 512m
           cpus: '0.25'
