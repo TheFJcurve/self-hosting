@@ -6,21 +6,23 @@ services:
       - ./config:/config
       - ./cache:/cache
       - type: bind
-        source: ./music
+        source: ${MUSIC_PATH}
         target: /data/music
       - type: bind
-        source: ./anime
+        source: ${ANIME_PATH}
         target: /data/anime
       - type: bind
-        source: ./shows
+        source: ${SHOWS_PATH}
         target: /data/shows
       - type: bind
-        source: ./movies
+        source: ${MOVIES_PATH}
         target: /data/movies
     restart: unless-stopped
-    environment:
-      - JELLYFIN_PublishedServerUrl=http://jellyfin.tail.sargun.ca
+    env_file:
+      - .env
     runtime: nvidia
+    networks:
+      - jellyfin_network
     deploy:
       resources:
         limits:
@@ -33,6 +35,151 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    env_file:
+      - .env
+    volumes:
+      - ./config/jellyseerr:/app/config
+    restart: unless-stopped
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.1'
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    env_file:
+      - .env
+    volumes:
+      - ./config/prowlarr:/config
+    restart: unless-stopped
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 128m
+          cpus: '0.1'
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    env_file:
+      - .env
+    volumes:
+    - ./config/radarr:/config
+    - ${MOVIES_PATH}:/movies
+    - ${DOWNLOADS_PATH}:/downloads
+    restart: unless-stopped
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.1'
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    env_file:
+      - .env
+    volumes:
+      - ./config/sonarr:/config
+      - ${SHOWS_PATH}:/shows
+      - ${ANIME_PATH}:/anime
+      - ${DOWNLOADS_PATH}:/downloads
+    restart: unless-stopped
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.1'
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    env_file:
+      - .env
+    volumes:
+      - ./config/lidarr:/config
+      - ${MUSIC_PATH}:/music
+      - ${DOWNLOADS_PATH}:/downloads
+    restart: unless-stopped
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.1'
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    env_file:
+      - .env
+    volumes:
+      - ./config/qbittorrent:/config
+      - ${DOWNLOADS_PATH}:/downloads
+    restart: unless-stopped
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '2'
+        reservations:
+          memory: 256m
+          cpus: '0.25'
+
+    # Usage: docker compose run --rm beets beet import /music
+    # Usage: docker compose run --rm beets beet import -qA /music
+  beets:
+    image: lscr.io/linuxserver/beets:latest
+    container_name: beets
+    env_file:
+      - .env
+    volumes:
+      - ./config/beets:/config
+      - ${MUSIC_PATH}:/music
+      - ${DOWNLOADS_PATH}:/downloads
+    restart: "no"
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
+        reservations:
+          memory: 128m
+          cpus: '0.1'
 
 networks:
   jellyfin_network:
