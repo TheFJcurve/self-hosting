@@ -161,29 +161,6 @@ services:
         reservations:
           memory: 256m
           cpus: '0.25'
-
-    # Usage: docker compose run --rm beets beet import /music
-    # Usage: docker compose run --rm beets beet import -qA /music
-  beets:
-    image: lscr.io/linuxserver/beets:latest
-    container_name: beets
-    env_file:
-      - .env
-    volumes:
-      - ./config/beets:/config
-      - ${MUSIC_PATH}:/music
-      - ${DOWNLOADS_PATH}:/downloads
-    restart: "no"
-    networks:
-      - jellyfin_network
-    deploy:
-      resources:
-        limits:
-          memory: 2g
-          cpus: '2'
-        reservations:
-          memory: 128m
-          cpus: '0.1'
   
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
