@@ -58,6 +58,8 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
+    ports:
+      - 9696:9696
     env_file:
       - .env
     volumes:
@@ -120,6 +122,8 @@ services:
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
+    ports:
+      - 8686:8686
     env_file:
       - .env
     volumes:
@@ -152,8 +156,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1g
-          cpus: '2'
+          memory: 3g
+          cpus: '4'
         reservations:
           memory: 256m
           cpus: '0.25'
@@ -175,11 +179,27 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512m
-          cpus: '1'
+          memory: 2g
+          cpus: '2'
         reservations:
           memory: 128m
           cpus: '0.1'
+  
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    env_file:
+      - .env
+    networks:
+      - jellyfin_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '1'
+        reservations:
+          memory: 256m
 
 networks:
   jellyfin_network:
