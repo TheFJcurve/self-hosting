@@ -17,7 +17,7 @@ services:
       - type: bind
         source: ./movies
         target: /data/movies
-    restart: 'unless-stopped'
+    restart: unless-stopped
     environment:
       - JELLYFIN_PublishedServerUrl=http://jellyfin.tail.sargun.ca
     runtime: nvidia
