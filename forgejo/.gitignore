@@ -1,2 +1,4 @@
-data
+forgejo_data
 migration.sh
+.env
+postgres_data

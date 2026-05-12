@@ -1,16 +1,17 @@
 services:
   server:
-    image: codeberg.org/forgejo/forgejo:13
+    image: codeberg.org/forgejo/forgejo:15.0.1
     container_name: forgejo
-    restart: always
+    restart: unless-stopped
     networks:
       - forgejo_network
     volumes:
-      - ./data:/data
+      - forgejo_data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
     ports:
-      - 8950:3000
       - 222:22
     deploy:
       resources:
@@ -21,7 +22,22 @@ services:
           memory: 128m
           cpus: '0.1'
 
+  db:
+    image: postgres:14
+    container_name: forgejo_postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - forgejo_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 networks:
   forgejo_network:
     name: forgejo_default
     driver: bridge
+
+volumes:
+  forgejo_data:
+  postgres_data:
