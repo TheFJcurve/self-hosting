@@ -38,7 +38,7 @@ services:
     env_file:
       - .env
     volumes:
-      - model-cache:/cache
+      - ./model-cache:/cache
     restart: unless-stopped
     healthcheck:
       disable: true
@@ -92,6 +92,3 @@ services:
         reservations:
           memory: 512m
           cpus: '0.25'
-
-volumes:
-  model-cache:
