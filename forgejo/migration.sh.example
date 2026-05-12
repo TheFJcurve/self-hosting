@@ -5,8 +5,4 @@ export FORGEJO_USER=...
 export FORGEJO_TOKEN=...
 export STRATEGY=cloned/mirrored
 
-docker run --rm \
-  -e GITHUB_USER -e GITHUB_TOKEN \
-  -e FORGEJO_URL -e FORGEJO_USER -e FORGEJO_TOKEN \
-  -e STRATEGY \
-  ghcr.io/rgbcube/github2forgejo
+./github-forgejo-migrate.sh
