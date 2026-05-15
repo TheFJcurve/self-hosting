@@ -1,4 +1,5 @@
 forgejo_data
+forgejo_runner_data
 migration.sh
 .env
 postgres_data
