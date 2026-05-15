@@ -27,6 +27,7 @@ services:
       - grafana_network
       - duplicati_network
       - kuma_network
+      - authentik_network
     deploy:
       resources:
         limits:
@@ -70,3 +71,6 @@ networks:
   kuma_network:
     external: true
     name: kuma_default
+  authentik_network:
+    external: true
+    name: authentik_default
