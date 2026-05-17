@@ -75,10 +75,11 @@ services:
       - aliasgroup1=${alias11}
       - DONT_GEN_SSL_CERT=YES
       - extra_params=--o:ssl.enable=false --o:ssl.termination=true
-      - username=admin
-      - password=admin
+      - username=${COLLABORA_USER}
+      - password=${COLLABORA_PASSWORD}
     cap_add:
       - MKNOD
+      - SYS_ADMIN
     logging:
       driver: ${LOG_DRIVER:-local}
     restart: unless-stopped
