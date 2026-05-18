@@ -1,0 +1,33 @@
+services:
+  kopia:
+    image: kopia/kopia:latest
+    hostname: Hostname
+    container_name: kopia
+    restart: unless-stopped
+    ports:
+      - 51515:51515
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        kopia server start \
+          --disable-csrf-token-checks \
+          --insecure \
+          --address=0.0.0.0:51515 \
+          --server-username=$$KOPIA_UI_USER \
+          --server-password=$$KOPIA_UI_PASSWORD
+    env_file:
+      - .env
+    volumes:
+      - /home/orion/backup:/destination/backup/
+      - /home/orion/self-hosting:/source/self-hosting/
+      - ./kopia_data/config:/app/config
+      - ./kopia_data/cache:/app/cache
+      - ./kopia_data/logs:/app/logs
+      - ./kopia_data/data:/data:ro
+      - ./kopia_data/repository:/repository
+      - ./kopia_data/tmp:/tmp:shared
+
+networks:
+  kopia_network:
+    name: kopia_default
+    driver: bridge

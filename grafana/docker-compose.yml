@@ -150,15 +150,12 @@ networks:
   grafana_network:
     name: grafana_default
     driver: bridge
-
   immich_network:
     external: true
     name: immich_default
-
   vaultwarden_network:
     external: true
     name: vaultwarden_default
-
   kuma_network:
     external: true
     name: kuma_default

@@ -25,7 +25,7 @@ services:
       - forgejo_default
       - clipcascade_default
       - grafana_network
-      - duplicati_network
+      - kopia_network
       - kuma_network
       - authentik_network
     deploy:
@@ -65,9 +65,9 @@ networks:
   grafana_network:
     external: true
     name: grafana_default
-  duplicati_network:
+  kopia_network:
     external: true
-    name: duplicati_default
+    name: kopia_default
   kuma_network:
     external: true
     name: kuma_default
