@@ -5,7 +5,7 @@ services:
     volumes:
       - ./duplicati_data:/data
       - /home/orion/backup:/destination/backup
-      - /home/orion/self-hosting:/source/self-hosting:ro
+      - /home/orion/self-hosting:/source/self-hosting
     environment:
       DUPLICATI_PRELOAD_SETTINGS: /run/secrets/preloadsettings
     secrets:

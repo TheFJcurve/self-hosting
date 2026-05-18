@@ -8,12 +8,12 @@ services:
       - db
     volumes:
       - ${NEXTCLOUD_LIBRARY}:/var/www/html
+      - ./.nextcloud_config/local_access.config.php:/var/www/html/config/local_access.config.php:ro
     environment:
       - MYSQL_PASSWORD=${DB_PW}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=${DB_USER}
       - MYSQL_HOST=db
-      #
       - NEXTCLOUD_TRUSTED_DOMAINS={nextcloud.tail.sargun.ca}
       - TRUSTED_DOMAINS={nextcloud.tail.sargun.ca}
       - OVERWRITECLIURL=https://nextcloud.tail.sargun.ca
@@ -21,6 +21,7 @@ services:
       - NEXTCLOUD_DEFAULT_PHONE_REGION=US
     networks:
       - nextcloud_network
+      - authentik_network
     deploy:
       resources:
         limits:
@@ -100,3 +101,6 @@ networks:
   nextcloud_network:
     name: nextcloud_default
     driver: bridge
+  authentik_network:
+    external: true
+    name: authentik_default

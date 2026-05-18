@@ -2,3 +2,4 @@ grafana_data
 prometheus_data
 loki_data
 uptime_kuma_token
+.env

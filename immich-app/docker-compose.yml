@@ -5,8 +5,8 @@ services:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     extends:
-       file: hwaccel.transcoding.yml
-       service: nvenc
+      file: hwaccel.transcoding.yml
+      service: nvenc
     volumes:
       - ${UPLOAD_LOCATION}:/data
       - /etc/localtime:/etc/localtime:ro
@@ -28,13 +28,15 @@ services:
         reservations:
           memory: 1g
           cpus: '0.5'
+    networks:
+      - immich_network
   
   immich-machine-learning:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-cuda
     extends:
-       file: hwaccel.ml.yml
-       service: cuda
+      file: hwaccel.ml.yml
+      service: cuda
     env_file:
       - .env
     volumes:
@@ -52,6 +54,8 @@ services:
         reservations:
           memory: 256m
           cpus: '0.5'
+    networks:
+      - immich_network
 
   redis:
     container_name: immich_redis
@@ -69,6 +73,8 @@ services:
         reservations:
           memory: 16m
           cpus: '0.1'
+    networks:
+      - immich_network
 
   database:
     container_name: immich_postgres
@@ -92,3 +98,10 @@ services:
         reservations:
           memory: 512m
           cpus: '0.25'
+    networks:
+      - immich_network
+
+networks:
+  immich_network:
+    name: immich_default
+    driver: bridge

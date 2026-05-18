@@ -3,8 +3,8 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     volumes:
-      - ./config:/config
-      - ./cache:/cache
+      - ./config/jellyfin:/config
+      - ./cache/jellyfin:/cache
       - type: bind
         source: ${MUSIC_PATH}
         target: /data/music
