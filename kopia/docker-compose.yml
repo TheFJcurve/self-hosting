@@ -1,9 +1,11 @@
 services:
   kopia:
     image: kopia/kopia:latest
-    hostname: Hostname
+    hostname: archlinux
     container_name: kopia
     restart: unless-stopped
+    mem_limit: 8g
+    cpus: 8
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |

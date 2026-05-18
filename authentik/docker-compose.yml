@@ -87,9 +87,31 @@ services:
           memory: 1g
           cpus: '1'
 
+  authentik-outpost-proxy:
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/proxy}:${AUTHENTIK_TAG:-2026.2.3}
+    container_name: authentik_outpost_proxy
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - authentik_network
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '0.5'
+        reservations:
+          memory: 128m
+          cpus: '0.1'
+
 networks:
   authentik_network:
     name: authentik_default
+    driver: bridge
+  
+  jellyfin_network:
+    name: jellyfin_default
     driver: bridge
   
   npm_proxy:
