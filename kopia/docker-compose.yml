@@ -4,8 +4,6 @@ services:
     hostname: Hostname
     container_name: kopia
     restart: unless-stopped
-    ports:
-      - 51515:51515
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
