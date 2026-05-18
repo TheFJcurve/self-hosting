@@ -109,11 +109,9 @@ networks:
   authentik_network:
     name: authentik_default
     driver: bridge
-  
   jellyfin_network:
-    name: jellyfin_default
-    driver: bridge
-  
-  npm_proxy:
-    name: npm_proxy
     external: true
+    name: jellyfin_default
+  npm_proxy:
+    external: true
+    name: npm_proxy
