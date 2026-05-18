@@ -1,32 +1,4 @@
 services:
-  postgresql:
-    env_file:
-    - .env
-    environment:
-      POSTGRES_DB: ${PG_DB:-authentik}
-      POSTGRES_PASSWORD: ${PG_PASS:?database password required}
-      POSTGRES_USER: ${PG_USER:-authentik}
-    healthcheck:
-      interval: 30s
-      retries: 5
-      start_period: 20s
-      test:
-        - CMD-SHELL
-        - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
-      timeout: 5s
-    image: docker.io/library/postgres:16-alpine
-    container_name: authentik_postgres
-    restart: unless-stopped
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
-    networks:
-      - authentik_network
-    deploy:
-      resources:
-        limits:
-          memory: 512m
-          cpus: '1'
-
   server:
     command: server
     depends_on:
@@ -86,6 +58,33 @@ services:
         limits:
           memory: 1g
           cpus: '1'
+  postgresql:
+    env_file:
+    - .env
+    environment:
+      POSTGRES_DB: ${PG_DB:-authentik}
+      POSTGRES_PASSWORD: ${PG_PASS:?database password required}
+      POSTGRES_USER: ${PG_USER:-authentik}
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_period: 20s
+      test:
+        - CMD-SHELL
+        - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      timeout: 5s
+    image: docker.io/library/postgres:16-alpine
+    container_name: authentik_postgres
+    restart: unless-stopped
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - authentik_network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1'
 
   authentik-outpost-proxy:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/proxy}:${AUTHENTIK_TAG:-2026.2.3}
@@ -96,6 +95,7 @@ services:
     networks:
       - authentik_network
       - jellyfin_network
+      - kuma_network
     deploy:
       resources:
         limits:
@@ -112,6 +112,9 @@ networks:
   jellyfin_network:
     external: true
     name: jellyfin_default
+  kuma_network:
+    external: true
+    name: kuma_default
   npm_proxy:
     external: true
     name: npm_proxy
