@@ -28,6 +28,7 @@ services:
       - kopia_network
       - kuma_network
       - authentik_network
+      - pihole_network
     deploy:
       resources:
         limits:
@@ -74,3 +75,6 @@ networks:
   authentik_network:
     external: true
     name: authentik_default
+  pihole_network:
+    external: true
+    name: pihole_default

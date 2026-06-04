@@ -1,0 +1,27 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    env_file:
+      - .env
+    volumes:
+      - ./pihole_data:/etc/pihole
+    cap_add:
+      - SYS_TIME
+      - SYS_NICE
+    restart: unless-stopped
+    networks:
+      - pihole_network
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
+
+networks:
+  pihole_network:
+    name: pihole_default
+    driver: bridge
