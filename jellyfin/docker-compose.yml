@@ -133,7 +133,7 @@ services:
       resources:
         limits:
           memory: 8g
-          cpus: '3'
+          cpus: '4'
         reservations:
           memory: 256m
           cpus: '0.1'

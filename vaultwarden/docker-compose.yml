@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./vw-data/:/data/
+      - /mnt/passport/vaultwarden/library:/data/
     networks:
       - vaultwarden_network
     deploy:

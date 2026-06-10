@@ -6,7 +6,7 @@ services:
     networks:
       - forgejo_network
     volumes:
-      - ./forgejo_data:/data
+      - /mnt/passport/forgejo/library:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     env_file:
