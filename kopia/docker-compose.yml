@@ -19,6 +19,8 @@ services:
       - .env
     volumes:
       - /home/orion/backup:/destination/backup/
+      - /mnt/passport/media:/source/media
+      - /mnt/passport/immich:/source/immich
       - /home/orion/self-hosting:/source/self-hosting/
       - ./kopia_data/config:/app/config
       - ./kopia_data/cache:/app/cache
