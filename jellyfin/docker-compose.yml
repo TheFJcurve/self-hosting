@@ -193,6 +193,25 @@ services:
           cpus: '2'
         reservations:
           memory: 256m
+  
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    env_file:
+      - .env
+    volumes:
+      - ./config/bazarr:/config
+      - /${MOVIES_PATH}:/movies
+      - /${SHOWS_PATH}:/shows
+      - /${ANIME_PATH}:/anime
+    restart: unless-stopped
+    networks:
+      - jellyfin_network
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '2'
 
 networks:
   jellyfin_network:
