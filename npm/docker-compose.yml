@@ -29,6 +29,8 @@ services:
       - kuma_network
       - authentik_network
       - pihole_network
+      - n8n_network
+      - scrutiny_network
     deploy:
       resources:
         limits:
@@ -78,3 +80,9 @@ networks:
   pihole_network:
     external: true
     name: pihole_default
+  n8n_network:
+    external: true
+    name: n8n_default
+  scrutiny_network:
+    external: true
+    name: scrutiny_default

@@ -72,10 +72,13 @@ services:
   collabora:
     image: collabora/code
     container_name: collabora
+    volumes:
+      - ./.collabora_config/coolwsd.xml:/etc/coolwsd/coolwsd.xml:ro
     environment:
       - aliasgroup1=${alias11}
       - DONT_GEN_SSL_CERT=YES
-      - extra_params=--o:ssl.enable=false --o:ssl.termination=true
+      - ssl.enable=false
+      - ssl.termination=true
       - username=${COLLABORA_USER}
       - password=${COLLABORA_PASSWORD}
     cap_add:

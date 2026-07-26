@@ -1,0 +1,32 @@
+services:
+  scrutiny:
+    restart: unless-stopped
+    container_name: scrutiny
+    image: ghcr.io/starosdev/scrutiny:latest-omnibus
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    volumes:
+      - /run/udev:/run/udev:ro
+      - /dev:/dev:ro
+      - /proc/mounts:/host/proc/mounts:ro
+      - ./scrutiny_data:/opt/scrutiny/config
+      - ./influxdb:/opt/scrutiny/influxdb
+    env_file:
+      - .env
+    devices:
+      - "/dev/sda"
+      - "/dev/nvme0"
+      - "/dev/nvme0n1"
+    networks:
+      - scrutiny_network
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1g
+
+networks:
+  scrutiny_network:
+    name: scrutiny_default
+    driver: bridge

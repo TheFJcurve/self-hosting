@@ -1,0 +1,35 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=${N8N_HOST}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://${N8N_HOST}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - GENERIC_TIMEZONE=America/Toronto
+      - TZ=America/Toronto
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    networks:
+      - n8n_network
+      - npm_proxy
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '1'
+        reservations:
+          memory: 256m
+          cpus: '0.1'
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
+
+networks:
+  n8n_network:
+    name: n8n_default
+    driver: bridge
+  npm_proxy:
+    external: true
+    name: npm_proxy
